@@ -7,8 +7,15 @@ const concat = require("gulp-concat");
 
 sass.compiler = require("dart-sass");
 
+//utilidades CSS
+const autoprefixer = require("autoprefixer");
+const postcss = require("gulp-postcss");
+const cssnano = require("cssnano");
+const sourcemaps = require("gulp-sourcemaps");
 
-//funcion que compila sass
+// utilidades js
+const terser = require("gulp-terser-js");
+const rename = require("gulp-rename");
 
 const paths = {
     imagenes: "src/img/**/*",
@@ -16,18 +23,23 @@ const paths = {
     js: "src/js/**/*.js"
 }
 
-function css(done) {
+function css() {
     return src(paths.scss)
+        .pipe(sourcemaps.init())
         .pipe(sass())
+        .pipe(postcss([autoprefixer(), cssnano()]))
+        .pipe(sourcemaps.write("."))
         .pipe(dest("./build/css"));
 }
 
-function minificarCSS() {
-    return src(paths.scss)
-        .pipe(sass({
-            outputStyle: 'compressed'
-        }))
-        .pipe(dest("./build/css"));
+function javascript() {
+    return src(paths.js)
+        .pipe(sourcemaps.init())
+        .pipe(concat("bundle.js"))
+        .pipe(terser())
+        .pipe(sourcemaps.write("."))
+        .pipe(rename({ suffix: ".min" }))
+        .pipe(dest("./build/js"));
 }
 
 function imagenes() {
@@ -39,9 +51,7 @@ function imagenes() {
 
 function versionWebp() {
     return src(paths.imagenes)
-        .pipe(webp(/*{
-            quality: 80
-        }*/))
+        .pipe(webp())
         .pipe(dest("./build/img"))
     //.pipe(notify({ message: 'Versión webP lista' }));
 }
@@ -51,13 +61,6 @@ function watchArchivo() {
     watch(paths.js, javascript);
 }
 
-function javascript() {
-    return src(paths.js)
-        .pipe(concat("bundle.js"))
-        .pipe(dest("./build/js"));
-}
-
-exports.minificarCSS = minificarCSS;
 exports.css = css;
 exports.watchArchivo = watchArchivo;
 exports.imagenes = imagenes;

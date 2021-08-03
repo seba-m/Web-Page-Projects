@@ -33,7 +33,10 @@ function mostrarImagen(e) {
     overlay.classList.add('overlay');
 
     //cuando se da click, cerrar la imagen
-    overlay.onclick = () => overlay.remove();
+    overlay.onclick = () => {
+        overlay.remove();
+        body.classList.remove('fijar-body');
+    }
 
     //boton para cerrar la imagen
     const cerrarImagen = document.createElement('P');
@@ -41,7 +44,10 @@ function mostrarImagen(e) {
     cerrarImagen.classList.add('btn-cerrar');
 
     //cuando se presiona, se cierra la imagen
-    imagen.onclick = () => overlay.remove();
+    imagen.onclick = () => {
+        overlay.remove();
+        body.classList.remove('fijar-body');
+    }
 
     overlay.appendChild(cerrarImagen);
 

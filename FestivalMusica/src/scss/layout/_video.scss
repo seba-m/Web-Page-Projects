@@ -45,7 +45,11 @@
             flex-direction: column;
             align-items: flex-start;
             color: $blanco;
-            font-size: 7rem;
+            font-size: 4rem;
+
+            @include tablet {
+                font-size: 7rem;
+            }
 
             span {
                 background-color: $rosa;
