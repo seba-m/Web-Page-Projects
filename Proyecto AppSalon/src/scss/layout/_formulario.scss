@@ -1,0 +1,15 @@
+.formulario {
+    width: 100%;
+}
+
+.campo {
+    display: flex;
+    label {
+        flex: 0 0 10rem;
+        color: $blanco;
+    }
+
+    input {
+        flex: 1;
+    }
+}
